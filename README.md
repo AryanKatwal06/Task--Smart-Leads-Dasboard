@@ -3,7 +3,6 @@
   Generated: May 17, 2026
 -->
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-ready-blue.svg)](docker-compose.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)]()
 [![Node.js](https://img.shields.io/badge/Node-%3E=18-brightgreen.svg)]()
@@ -139,13 +138,13 @@ Mermaid architecture diagram (rendered on supported platforms):
 
 ```mermaid
 flowchart LR
-  A[User / Browser] --> B[Frontend (Vite / React)]
-  B --> C[Backend (Express + TypeScript)]
-  C --> D[(MongoDB)]
-  C --> E[Scheduler / Jobs]
-  E --> F[(Exports storage)]
-  C --> G[(Redis Cache)]
-  %% Labels intentionally simplified for broad Mermaid compatibility
+  A["User / Browser"] --> B["Frontend (Vite / React)"]
+  B --> C["Backend (Express + TypeScript)"]
+  C --> D[("MongoDB")]
+  C --> E["Scheduler / Jobs"]
+  E --> F[("Exports storage")]
+  C --> G[("Redis Cache")]
+  %% Labels quoted to avoid parser issues with special characters
 ```
 
 ---
