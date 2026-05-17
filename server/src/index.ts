@@ -1,31 +1,28 @@
-import dotenv from 'dotenv';
+// Load environment variables as early as possible
+import 'dotenv/config';
 import type { Server } from 'http';
 import { connectDB, disconnectDB } from './config/db';
 import { logger } from './utils/logger';
 import app from './app';
 import { initEmailService } from './utils/email';
-import validateEnv from './config/env';
 
 let server: Server | undefined;
 
 async function start() {
 	try {
-		// Load env at runtime (avoid validating during install/build steps)
-		dotenv.config();
 		// log the active MONGO_URI early so we can verify which DB the container uses
 		console.log('ACTIVE_MONGO_URI:', process.env.MONGO_URI);
 
-		const env = validateEnv(process.env);
-		const PORT = Number(env.PORT) || 5000;
+		const PORT = Number(process.env.PORT) || 5000;
 
-		const uri = env.MONGO_URI;
+		const uri = process.env.MONGO_URI || '';
 		await connectDB(uri);
 
 		await initEmailService();
 
 		server = app.listen(PORT, () => logger.info(`Server listening on ${PORT}`));
 
-		if (process.env.ENABLE_SCHEDULER === 'true' || env.ENABLE_SCHEDULER === 'true') {
+		if (process.env.ENABLE_SCHEDULER === 'true') {
 			const { default: startExportScheduler } = await import('./jobs/exportScheduler');
 			startExportScheduler();
 		}
