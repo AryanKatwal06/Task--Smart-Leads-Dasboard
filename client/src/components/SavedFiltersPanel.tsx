@@ -49,7 +49,7 @@ export default function SavedFiltersPanel({ currentFilters, onLoadFilter }: Save
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="section-label">Saved filters</p>
-          <h4 className="mt-1 text-sm font-semibold text-slate-950 dark:text-white">Saved Filters</h4>
+          <h3 className="mt-1 text-sm font-semibold text-slate-950 dark:text-white">Saved Filters</h3>
         </div>
         {!showSaveForm ? (
           <Button variant="ghost" onClick={() => setShowSaveForm(true)}>

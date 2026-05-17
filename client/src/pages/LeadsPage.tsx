@@ -191,12 +191,12 @@ const LeadsPage: React.FC = () => {
         }
       />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="Visible leads"
           value={meta ? meta.total : '—'}
           delta={queryState.search || queryState.status || queryState.source ? 'Filtered' : 'All records'}
-          hint={meta ? `Page ${meta.page} of ${meta.totalPages || 1}` : 'Waiting for data'}
+          hint={meta && meta.total > 0 ? `Page ${meta.page} of ${meta.totalPages || 1}` : (meta ? 'No results' : 'Waiting for data')}
           icon={<Sparkles size={18} />}
           accent="indigo"
         />
@@ -299,7 +299,7 @@ const LeadsPage: React.FC = () => {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="section-label">Lead list</p>
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">Lead list</h2>
+              <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">Leads list</h2>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Button variant="ghost" onClick={clearFilters}>
