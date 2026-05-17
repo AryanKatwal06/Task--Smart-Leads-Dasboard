@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      USE_REAL_MONGO: 'true'
+      MONGO_URI: 'mongodb://localhost:27017/test'
     services:
       mongo:
         image: mongo:6.0
@@ -24,6 +27,7 @@ jobs:
           cache: 'npm'
 
       - name: Install MongoDB in-memory deps
+        if: env.USE_REAL_MONGO != 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y wget ca-certificates || true
@@ -44,10 +48,18 @@ jobs:
         run: |
           npm ci
           npx tsc -p tsconfig.json
+          # Wait for MongoDB service to be ready when using the service
+          if [ "${USE_REAL_MONGO}" = 'true' ]; then
+            for i in $(seq 1 30); do
+              (echo > /dev/tcp/localhost/27017) >/dev/null 2>&1 && break || sleep 1
+            done
+          fi
           npm test -- --coverage --runInBand
         env:
           JEST_JUNIT_OUTPUT_DIR: ./test-results
           JEST_JUNIT_OUTPUT_NAME: junit.xml
+          USE_REAL_MONGO: ${{ env.USE_REAL_MONGO }}
+          MONGO_URI: ${{ env.MONGO_URI }}
 
       - name: "Client: install & test"
         working-directory: client

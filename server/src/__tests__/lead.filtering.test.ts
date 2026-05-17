@@ -21,8 +21,8 @@ jest.mock('../middlewares/role', () => ({
 }));
 
 import request from 'supertest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import { connectTestDb, disconnectTestDb, clearTestDb } from '../test-utils/mongo';
 import app from '../app';
 import { LeadModel } from '../models/lead.model';
 
@@ -47,21 +47,16 @@ type LeadListResponse = {
 };
 
 describe('Filtering and pagination combinations', () => {
-  let mongod: MongoMemoryServer;
-
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
-    await mongoose.connect(uri, { dbName: 'test' });
+    await connectTestDb();
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
-    if (mongod) await mongod.stop();
+    await disconnectTestDb();
   });
 
   beforeEach(async () => {
-    await LeadModel.deleteMany({});
+    await clearTestDb();
     const docs = [];
     for (let i = 1; i <= 23; i++) {
       docs.push({
