@@ -139,15 +139,13 @@ Mermaid architecture diagram (rendered on supported platforms):
 
 ```mermaid
 flowchart LR
-  subgraph Browser
-    A[User / Browser] -->|HTTPS| B[Frontend (Vite/React)]
-  end
-
-  B -->|REST: /api/v1| C[Backend (Express + TypeScript)]
-  C -->|read/write| D[(MongoDB)]
-  C -->|schedule| E[Scheduler / Jobs]
-  E -->|write| F[(Exports storage)]
-  C -->|optional| G[(Redis Cache)]
+  A[User / Browser] --> B[Frontend (Vite / React)]
+  B --> C[Backend (Express + TypeScript)]
+  C --> D[(MongoDB)]
+  C --> E[Scheduler / Jobs]
+  E --> F[(Exports storage)]
+  C --> G[(Redis Cache)]
+  %% Labels intentionally simplified for broad Mermaid compatibility
 ```
 
 ---
@@ -508,18 +506,7 @@ Docker-based production
 
 ---
 
-## Screenshots
-
-Add screenshots to this section for visual reviewers. Place images in
-`docs/screenshots/` and reference them here.
-
-- Login page — `docs/screenshots/login.png`
-- Dashboard overview — `docs/screenshots/dashboard.png`
-- Analytics page — `docs/screenshots/analytics.png`
-- Mobile UI — `docs/screenshots/mobile.png`
-- Admin panel — `docs/screenshots/admin.png`
-
----
+<!-- Screenshots removed -->
 
 ## Future Improvements (Roadmap)
 
