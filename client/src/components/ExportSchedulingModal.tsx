@@ -17,11 +17,13 @@ export default function ExportSchedulingModal({ onClose }: { onClose: () => void
   const exportMutation = useMutation(
     () => leadsService.exportCSV({ status, source, search, startDate, endDate }),
     {
-      onSuccess: (blob) => {
+      onSuccess: (res) => {
+        const blob = res.blob as Blob;
+        const filename = res.filename ?? `leads-export-${new Date().toISOString().slice(0, 10)}.csv`;
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `leads-export-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -40,7 +42,7 @@ export default function ExportSchedulingModal({ onClose }: { onClose: () => void
         <div className="space-y-3">
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Status (optional)</label>
-            <Select value={status ?? ''} onChange={(e) => setStatus(e.target.value || undefined)}>
+            <Select value={status ?? ''} onChange={(e) => setStatus((e.target.value as LeadStatus) || undefined)}>
               <option value="">All</option>
               <option value="New">New</option>
               <option value="Contacted">Contacted</option>
@@ -50,7 +52,7 @@ export default function ExportSchedulingModal({ onClose }: { onClose: () => void
           </div>
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Source (optional)</label>
-            <Select value={source ?? ''} onChange={(e) => setSource(e.target.value || undefined)}>
+            <Select value={source ?? ''} onChange={(e) => setSource((e.target.value as LeadSource) || undefined)}>
               <option value="">All</option>
               <option value="Website">Website</option>
               <option value="Instagram">Instagram</option>

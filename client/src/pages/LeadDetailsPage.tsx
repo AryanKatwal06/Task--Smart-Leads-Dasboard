@@ -26,11 +26,10 @@ const LeadDetailsPage: React.FC = () => {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
 
-  const { register, handleSubmit, reset, formState } = useForm<FormValues>({
+  const { register, handleSubmit, reset, formState, setFocus } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { name: '', email: '', status: 'New', source: 'Website' }
   });
-  const nameRef = React.useRef<HTMLInputElement | null>(null);
 
   const leadQuery = useQuery({
     queryKey: ['lead', leadId],
@@ -52,9 +51,9 @@ const LeadDetailsPage: React.FC = () => {
   useEffect(() => {
     if (isEditing) {
       // focus name field when entering edit mode
-      setTimeout(() => nameRef.current?.focus(), 50);
+      setTimeout(() => setFocus('name'), 50);
     }
-  }, [isEditing]);
+  }, [isEditing, setFocus]);
 
   const updateMutation = useMutation({
     mutationFn: async (data: FormValues) => {
@@ -144,7 +143,7 @@ const LeadDetailsPage: React.FC = () => {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Name</label>
-                  <Field ref={nameRef} disabled={!isEditing} {...register('name')} />
+                  <Field disabled={!isEditing} {...register('name')} />
                   {formState.errors.name ? <p className="text-xs text-rose-500">{formState.errors.name.message}</p> : null}
                 </div>
                 <div className="space-y-2">
