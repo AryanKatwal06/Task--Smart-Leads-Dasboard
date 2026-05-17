@@ -1,7 +1,9 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
-let mongod: MongoMemoryServer | null = null;
+// Use a loose type here because the memory server types can vary between
+// environments and we only use this helper for tests.
+let mongod: any = null;
 
 export async function connectTestDb() {
   if (process.env.USE_REAL_MONGO === 'true') {
