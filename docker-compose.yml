@@ -1,0 +1,53 @@
+services:
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    # no container-level healthcheck (some mongo images lack the shell client in runtime)
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    environment:
+      NODE_ENV: 'development'
+      PORT: '5000'
+      ENABLE_SCHEDULER: 'false'
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mongo
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -f http://localhost:5000/api/v1/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
+    restart: unless-stopped
+    environment:
+      NODE_ENV: 'development'
+      VITE_API_URL: ${VITE_API_URL:-http://backend:5000/api}
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
+    name: smart_leads_mongo_data

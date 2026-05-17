@@ -1,0 +1,34 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install client deps
+        run: npm ci --prefix client
+
+      - name: Build client
+        run: npm run --prefix client build
+
+      - name: Run Lighthouse CI
+        run: |
+          npm run --prefix client preview -- --host 127.0.0.1 --port 4173 > preview.log 2>&1 &
+          preview_pid=$!
+          npx --yes wait-on http://127.0.0.1:4173
+          npx @lhci/cli autorun --config .lighthouseci/lighthouserc.js
+          kill "$preview_pid"

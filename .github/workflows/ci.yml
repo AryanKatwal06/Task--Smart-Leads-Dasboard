@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install root deps
+        run: npm ci
+
+      - name: "Server: install & test"
+        working-directory: server
+        run: |
+          npm ci
+          npx tsc -p tsconfig.json
+          npm test -- --coverage
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./test-results
+          JEST_JUNIT_OUTPUT_NAME: junit.xml
+
+      - name: "Client: install & test"
+        working-directory: client
+        run: |
+          npm ci
+          npx tsc -p tsconfig.json
+          npm test -- --ci --reporters=default --coverage
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./test-results
+          JEST_JUNIT_OUTPUT_NAME: junit.xml
+
+      - name: Run DB migrations (create indexes)
+        working-directory: server
+        env:
+          MONGO_URI: mongodb://localhost:27017/smart_leads
+        run: node scripts/add-lead-indexes.js || true
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: |
+            server/test-results/
+            client/test-results/
+          retention-days: 30
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: |
+            server/coverage/
+            client/coverage/
+          retention-days: 30

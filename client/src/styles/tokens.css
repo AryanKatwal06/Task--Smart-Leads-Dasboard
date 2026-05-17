@@ -1,0 +1,44 @@
+/* Premium design tokens - CSS custom properties */
+:root{
+  --radius-lg: 1rem;
+  --radius-xl: 1.75rem;
+  --card-padding: 1.25rem;
+  --metric-gradient-start: rgba(99,102,241,0.18);
+  --metric-gradient-end: rgba(14,165,233,0.10);
+  --glass-elevation: 0 18px 60px rgba(15,23,42,0.08);
+  --glass-elevation-strong: 0 30px 90px rgba(15,23,42,0.14);
+  --motion-duration: 280ms;
+}
+
+.dark{
+  --metric-gradient-start: rgba(129,140,248,0.14);
+  --metric-gradient-end: rgba(34,211,238,0.06);
+}
+
+/* Semantic colors (map to existing CSS variables for consistency) */
+:root{
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+}
+
+/* Utility aliases for quick usage */
+.bg-skin-bg { background-color: rgb(var(--color-bg) / 1); }
+.bg-skin-bg-elevated { background-color: rgb(var(--color-bg-elevated) / 1); }
+.text-skin-text { color: rgb(var(--color-text) / 1); }
+.text-skin-muted { color: rgb(var(--color-text-muted) / 1); }
+.border-skin { border-color: rgb(var(--color-border) / 1); }
+.bg-skin-accent { background-color: rgb(var(--color-accent) / 1); }
+.bg-skin-accent-strong { background-color: rgb(var(--color-accent-strong) / 1); }
+.text-skin-accent { color: rgb(var(--color-accent) / 1); }
+.shadow-glass { box-shadow: var(--glass-elevation); }
+.shadow-glass-strong { box-shadow: var(--glass-elevation-strong); }
+.rounded-lg-token { border-radius: var(--radius-lg); }
+.rounded-xl-token { border-radius: var(--radius-xl); }

@@ -1,0 +1,198 @@
+@import './tokens.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --bg: 244 247 251;
+    --bg-elevated: 255 255 255;
+    --bg-muted: 237 242 247;
+    --border: 220 227 236;
+    --text: 15 23 42;
+    --text-muted: 71 85 105;
+    --accent: 79 70 229;
+    --accent-strong: 37 99 235;
+    --success: 5 150 105;
+    --warning: 217 119 6;
+    --danger: 220 38 38;
+    --shadow: 15 23 42;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --bg: 6 10 20;
+    --bg-elevated: 11 16 32;
+    --bg-muted: 15 23 42;
+    --border: 37 47 72;
+    --text: 226 232 240;
+    --text-muted: 148 163 184;
+    --accent: 129 140 248;
+    --accent-strong: 99 102 241;
+    --success: 52 211 153;
+    --warning: 251 191 36;
+    --danger: 248 113 113;
+    --shadow: 2 6 23;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply min-h-full antialiased;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: rgb(var(--text));
+    background:
+      radial-gradient(circle at top left, rgba(79, 70, 229, 0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 26%),
+      linear-gradient(180deg, rgb(var(--bg)) 0%, rgb(var(--bg)) 100%);
+    background-attachment: fixed;
+  }
+
+  * {
+    @apply border-slate-200 dark:border-slate-700;
+  }
+
+  ::selection {
+    background: rgba(79, 70, 229, 0.18);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  button:not(:disabled) {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      filter 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      opacity 180ms ease;
+    will-change: transform;
+  }
+
+  button:not(:disabled):active {
+    transform: translateY(1px) scale(0.985);
+    filter: saturate(1.05);
+  }
+
+  button:not(:disabled):active svg {
+    transform: scale(0.98);
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply min-h-screen text-slate-900 dark:text-slate-100;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.16), transparent 25%),
+      radial-gradient(circle at 90% 10%, rgba(14, 165, 233, 0.14), transparent 22%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.35));
+  }
+
+  .glass-panel {
+    @apply rounded-3xl backdrop-blur-2xl;
+    border: 1px solid rgb(var(--color-border) / 0.12);
+    background-color: rgb(var(--color-bg-elevated) / 0.90);
+    box-shadow: var(--glass-elevation);
+  }
+
+  .glass-panel-strong {
+    @apply rounded-xl-token backdrop-blur-2xl;
+    border: 1px solid rgb(var(--color-border) / 0.16);
+    background-color: rgb(var(--color-bg-elevated) / 0.95);
+    box-shadow: var(--glass-elevation-strong);
+  }
+
+  .surface {
+    @apply rounded-lg-token backdrop-blur-xl;
+    border: 1px solid rgb(var(--color-border) / 0.18);
+    background-color: rgb(var(--color-bg-elevated) / 0.85);
+    box-shadow: var(--glass-elevation);
+  }
+
+  .section-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.28em] text-skin-muted;
+  }
+
+  .field {
+    @apply w-full rounded-2xl px-4 py-3 text-sm outline-none transition-all duration-200;
+    border: 1px solid rgb(var(--color-border) / 0.18);
+    background-color: rgb(var(--color-bg-elevated) / 0.92);
+    color: rgb(var(--color-text) / 1);
+    box-shadow: none;
+  }
+
+  .field::placeholder {
+    color: rgb(var(--color-text-muted) / 1);
+  }
+
+  .field-select {
+    @apply field pr-10;
+  }
+
+  .button {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none disabled:pointer-events-none disabled:opacity-60;
+    box-shadow: var(--glass-elevation-strong);
+  }
+
+  .button-primary {
+    @apply button text-white;
+    background-color: rgb(var(--color-accent) / 1);
+    color: rgb(var(--color-bg-elevated) / 1);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  }
+
+  .button-secondary {
+    @apply button text-skin-text;
+    border: 1px solid rgb(var(--color-border) / 0.14);
+    background-color: rgb(var(--color-bg-elevated) / 0.92);
+  }
+
+  .button-ghost {
+    @apply button text-skin-muted hover:bg-skin-bg-elevated;
+  }
+
+  .button-danger {
+    @apply button text-skin-text;
+    border: 1px solid rgb(var(--color-danger) / 0.16);
+    background-color: rgba(var(--color-danger) / 0.06);
+    color: rgb(var(--color-danger) / 1);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium shadow-sm;
+    border: 1px solid rgb(var(--color-border) / 0.12);
+    background-color: rgb(var(--color-bg-elevated) / 0.9);
+    color: rgb(var(--color-text-muted) / 1);
+  }
+
+  .metric-card {
+    @apply glass-panel p-5 transition-transform duration-200 hover:-translate-y-1 shadow-glass;
+    border-radius: var(--radius-lg);
+    background-image: linear-gradient(135deg, var(--metric-gradient-start), var(--metric-gradient-end));
+    background-repeat: no-repeat;
+    background-size: 200% 200%;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
