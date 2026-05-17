@@ -6,17 +6,18 @@ import app from './app';
 import { initEmailService } from './utils/email';
 import validateEnv from './config/env';
 
-dotenv.config();
-// log the active MONGO_URI early so we can verify which DB the container uses
-console.log('ACTIVE_MONGO_URI:', process.env.MONGO_URI);
-
-const env = validateEnv(process.env);
-const PORT = Number(env.PORT) || 5000;
-
 let server: Server | undefined;
 
 async function start() {
 	try {
+		// Load env at runtime (avoid validating during install/build steps)
+		dotenv.config();
+		// log the active MONGO_URI early so we can verify which DB the container uses
+		console.log('ACTIVE_MONGO_URI:', process.env.MONGO_URI);
+
+		const env = validateEnv(process.env);
+		const PORT = Number(env.PORT) || 5000;
+
 		const uri = env.MONGO_URI;
 		await connectDB(uri);
 
