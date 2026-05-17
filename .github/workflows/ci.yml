@@ -31,7 +31,7 @@ jobs:
         run: |
           npm ci
           npx tsc -p tsconfig.json
-          npm test -- --coverage
+          npm test -- --coverage --runInBand
         env:
           JEST_JUNIT_OUTPUT_DIR: ./test-results
           JEST_JUNIT_OUTPUT_NAME: junit.xml
