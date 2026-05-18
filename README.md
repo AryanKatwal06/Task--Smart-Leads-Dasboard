@@ -491,6 +491,12 @@ Vercel (frontend) + Render / Railway (backend) — quick path
 - Backend: Deploy server to Render, Railway, or a container service; set
   `MONGO_URI` and secrets in the platform's secret manager.
 
+**Live Deployments**
+
+- Frontend: https://task-smart-leads-dashboard-client.vercel.app
+- Backend: https://task-smart-leads-dashboard.onrender.com
+
+
 Railway / Render notes
 - Ensure environment variables are added to the project settings.
 - Use managed MongoDB or connect to Atlas. For exports, configure a bucket
