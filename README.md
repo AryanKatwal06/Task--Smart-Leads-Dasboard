@@ -33,7 +33,6 @@ Dockerized for local development and production deployments.
 - [Security & Best Practices](#security--best-practices)
 - [Performance & Scaling](#performance--scaling)
 - [Deployment Guide](#deployment-guide)
-- [Screenshots](#screenshots)
 - [Future Improvements](#future-improvements)
 - [Contributing](#contributing)
 - [License](#license)
